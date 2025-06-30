@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZIPPTECH Team</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6e45e2;
+            --secondary: #88d3ce;
+            --text: #2d3748;
+            --light: #f7fafc;
+            --dark: #1a202c;
+            --glass: rgba(255, 255, 255, 0.8);
+            --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body.dark-mode {
+            --primary: #9f7aea;
+            --secondary: #4fd1c5;
+            --text: #f7fafc;
+            --light: #1a202c;
+            --dark: #f7fafc;
+            --glass: rgba(26, 32, 44, 0.8);
+            --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: white;
+            color: var(--text);
+            transition: var(--transition);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        body.dark-mode {
+            background-color: #121212;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--card-shadow);
+            z-index: 100;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .team-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .team-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2.5rem;
+            color: var(--primary);
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .team-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 3px;
+        }
+
+        .tree-container {
+            width: 100%;
+            min-height: 600px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tree {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            padding-top: 50px;
+        }
+
+        .tree-level {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin-bottom: 80px;
+            position: relative;
+        }
+
+        .tree-node {
+            position: relative;
+            margin: 0 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 2;
+        }
+
+        .tree-node:hover {
+            transform: translateY(-5px);
+        }
+
+        .node-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary);
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+        }
+
+        .tree-node:hover .node-avatar {
+            border-color: var(--secondary);
+            box-shadow: 0 0 15px rgba(113, 69, 226, 0.5);
+        }
+
+        .node-info {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .node-name {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .node-role {
+            font-size: 0.9rem;
+            color: var(--text);
+            opacity: 0.8;
+        }
+
+        .node-connector {
+            position: absolute;
+            background-color: var(--primary);
+            z-index: 1;
+        }
+
+        .node-connector.vertical {
+            width: 2px;
+            height: 40px;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .node-connector.horizontal {
+            height: 2px;
+            width: 100%;
+            top: 50%;
+            left: 0;
+        }
+
+        .profile-card {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            width: 280px;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 10;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode .profile-card {
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .tree-node:hover .profile-card {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .card-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+            margin-right: 15px;
+        }
+
+        .card-name {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin-bottom: 3px;
+        }
+
+        .card-role {
+            font-size: 0.9rem;
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        .card-bio {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .card-social {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .social-icon {
+            color: var(--text);
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+
+        .social-icon:hover {
+            color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        @media (max-width: 768px) {
+            .tree-level {
+                flex-direction: column;
+                align-items: center;
+                margin-bottom: 40px;
+            }
+
+            .tree-node {
+                margin: 15px 0;
+            }
+
+            .node-connector.horizontal {
+                display: none;
+            }
+
+            .node-connector.vertical {
+                height: 20px;
+                top: -20px;
+            }
+
+            .profile-card {
+                left: 0;
+                transform: translateX(0) translateY(20px);
+                width: 100%;
+            }
+
+            .tree-node:hover .profile-card {
+                transform: translateX(0) translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <div class="team-container">
+        <h1 class="team-title">ZIPPTECH Team</h1>
+        <div class="tree-container">
+            <div class="tree" id="orgTree">
+                <!-- Tree will be generated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dark mode toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const icon = themeToggle.querySelector('i');
+        
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            
+            if (document.body.classList.contains('dark-mode')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+        });
+
+        // Team data
+        const teamData = {
+            name: "Alex Johnson",
+            role: "Founder & CEO",
+            image: "https://randomuser.me/api/portraits/men/32.jpg",
+            bio: "Visionary leader with 15+ years in tech innovation. Passionate about building solutions that matter.",
+            social: {
+                linkedin: "#",
+                twitter: "#",
+                github: "#"
+            },
+            children: [
+                {
+                    name: "Sarah Williams",
+                    role: "Co-Founder & CTO",
+                    image: "https://randomuser.me/api/portraits/women/44.jpg",
+                    bio: "Tech wizard specializing in scalable architectures and cutting-edge development.",
+                    social: {
+                        linkedin: "#",
+                        twitter: "#",
+                        github: "#"
+                    },
+                    children: [
+                        {
+                            name: "Michael Chen",
+                            role: "Lead Developer",
+                            image: "https://randomuser.me/api/portraits/men/22.jpg",
+                            bio: "Full-stack developer with expertise in React, Node.js and cloud infrastructure.",
+                            social: {
+                                linkedin: "#",
+                                github: "#"
+                            }
+                        },
+                        {
+                            name: "Emily Rodriguez",
+                            role: "Senior Developer",
+                            image: "https://randomuser.me/api/portraits/women/63.jpg",
+                            bio: "Specializes in mobile development and UI/UX optimization.",
+                            social: {
+                                linkedin: "#",
+                                github: "#"
+                            }
+                        }
+                    ]
+                },
+                {
+                    name: "David Kim",
+                    role: "Head of Design",
+                    image: "https://randomuser.me/api/portraits/men/75.jpg",
+                    bio: "Creative director with an eye for detail and user-centered design principles.",
+                    social: {
+                        linkedin: "#",
+                        dribbble: "#",
+                        behance: "#"
+                    },
+                    children: [
+                        {
+                            name: "Lisa Park",
+                            role: "UI/UX Designer",
+                            image: "https://randomuser.me/api/portraits/women/33.jpg",
+                            bio: "Creates beautiful, intuitive interfaces that users love.",
+                            social: {
+                                linkedin: "#",
+                                dribbble: "#"
+                            }
+                        }
+                    ]
+                },
+                {
+                    name: "Jessica Taylor",
+                    role: "Marketing Director",
+                    image: "https://randomuser.me/api/portraits/women/68.jpg",
+                    bio: "Growth hacker and brand strategist with a track record of successful campaigns.",
+                    social: {
+                        linkedin: "#",
+                        twitter: "#"
+                    },
+                    children: [
+                        {
+                            name: "Robert Brown",
+                            role: "Content Strategist",
+                            image: "https://randomuser.me/api/portraits/men/41.jpg",
+                            bio: "Crafts compelling narratives that resonate with our audience.",
+                            social: {
+                                linkedin: "#",
+                                medium: "#"
+                            }
+                        }
+                    ]
+                }
+            ]
+        };
+
+        // Function to generate the org tree
+        function generateTree(data, parentElement, level = 0) {
+            const treeLevel = document.createElement('div');
+            treeLevel.className = 'tree-level';
+            
+            const node = document.createElement('div');
+            node.className = 'tree-node';
+            
+            // Create avatar
+            const avatar = document.createElement('img');
+            avatar.className = 'node-avatar';
+            avatar.src = data.image;
+            avatar.alt = data.name;
+            
+            // Create node info
+            const nodeInfo = document.createElement('div');
+            nodeInfo.className = 'node-info';
+            
+            const name = document.createElement('div');
+            name.className = 'node-name';
+            name.textContent = data.name;
+            
+            const role = document.createElement('div');
+            role.className = 'node-role';
+            role.textContent = data.role;
+            
+            nodeInfo.appendChild(name);
+            nodeInfo.appendChild(role);
+            
+            // Create profile card
+            const card = document.createElement('div');
+            card.className = 'profile-card';
+            
+            const cardHeader = document.createElement('div');
+            cardHeader.className = 'card-header';
+            
+            const cardAvatar = document.createElement('img');
+            cardAvatar.className = 'card-avatar';
+            cardAvatar.src = data.image;
+            cardAvatar.alt = data.name;
+            
+            const cardHeaderInfo = document.createElement('div');
+            
+            const cardName = document.createElement('div');
+            cardName.className = 'card-name';
+            cardName.textContent = data.name;
+            
+            const cardRole = document.createElement('div');
+            cardRole.className = 'card-role';
+            cardRole.textContent = data.role;
+            
+            cardHeaderInfo.appendChild(cardName);
+            cardHeaderInfo.appendChild(cardRole);
+            
+            cardHeader.appendChild(cardAvatar);
+            cardHeader.appendChild(cardHeaderInfo);
+            
+            const cardBio = document.createElement('div');
+            cardBio.className = 'card-bio';
+            cardBio.textContent = data.bio;
+            
+            const cardSocial = document.createElement('div');
+            cardSocial.className = 'card-social';
+            
+            // Add social links
+            for (const [platform, url] of Object.entries(data.social)) {
+                const socialLink = document.createElement('a');
+                socialLink.href = url;
+                socialLink.target = '_blank';
+                socialLink.rel = 'noopener noreferrer';
+                
+                const icon = document.createElement('i');
+                icon.className = `fab fa-${platform} social-icon`;
+                
+                socialLink.appendChild(icon);
+                cardSocial.appendChild(socialLink);
+            }
+            
+            card.appendChild(cardHeader);
+            card.appendChild(cardBio);
+            card.appendChild(cardSocial);
+            
+            node.appendChild(avatar);
+            node.appendChild(nodeInfo);
+            node.appendChild(card);
+            
+            treeLevel.appendChild(node);
+            
+            // Add vertical connector if not root level
+            if (level > 0) {
+                const verticalConnector = document.createElement('div');
+                verticalConnector.className = 'node-connector vertical';
+                node.appendChild(verticalConnector);
+            }
+            
+            // Process children
+            if (data.children && data.children.length > 0) {
+                const childrenContainer = document.createElement('div');
+                childrenContainer.className = 'tree-children';
+                
+                // Add horizontal connector if multiple children
+                if (data.children.length > 1) {
+                    const horizontalConnector = document.createElement('div');
+                    horizontalConnector.className = 'node-connector horizontal';
+                    node.appendChild(horizontalConnector);
+                }
+                
+                data.children.forEach(child => {
+                    generateTree(child, childrenContainer, level + 1);
+                });
+                
+                treeLevel.appendChild(childrenContainer);
+            }
+            
+            parentElement.appendChild(treeLevel);
+        }
+
+        // Initialize the tree
+        document.addEventListener('DOMContentLoaded', () => {
+            const treeContainer = document.getElementById('orgTree');
+            generateTree(teamData, treeContainer);
+        });
+    </script>
+</body>
+</html>
