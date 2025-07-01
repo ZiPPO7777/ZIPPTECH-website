@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ZIPPTECH-Dictionary</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
+   <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-book-open"></i>
+                <span>ZIPPTECH-Dictionary</span>
+            </div>
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
+        </header>
+
+        <div class="search-container">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" class="search-input" id="searchInput" placeholder="Search for a word..." autocomplete="off">
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" data-tab="dictionary">Dictionary</div>
+            <div class="tab" data-tab="bookmarks">Bookmarks</div>
+            <div class="tab" data-tab="history">History</div>
+        </div>
+
+        <div class="tab-content active" id="dictionaryTab">
+            <div id="wordResult"></div>
+            <div id="errorMessage" class="error-message" style="display: none;"></div>
+            <div id="loadingIndicator" class="loading" style="display: none;">
+                <div class="spinner"></div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="bookmarksTab">
+            <div id="bookmarksList"></div>
+            <div id="emptyBookmarks" class="empty-state">
+                <i class="fas fa-bookmark"></i>
+                <h3>No Bookmarks Yet</h3>
+                <p>Save words to access them later</p>
+            </div>
+        </div>
+
+        <div class="tab-content" id="historyTab">
+            <div id="historyList"></div>
+            <div id="emptyHistory" class="empty-state">
+                <i class="fas fa-history"></i>
+                <h3>No Search History</h3>
+                <p>Your searched words will appear here</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <a href="#" class="nav-item active" data-tab="dictionary">
+            <i class="fas fa-book"></i>
+            <span>Dictionary</span>
+        </a>
+        <a href="#" class="nav-item" data-tab="bookmarks">
+            <i class="fas fa-bookmark"></i>
+            <span>Bookmarks</span>
+        </a>
+        <a href="#" class="nav-item" data-tab="history">
+            <i class="fas fa-history"></i>
+            <span>History</span>
+        </a>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+   <script src="app.js"></script>
+</body>
+</html>

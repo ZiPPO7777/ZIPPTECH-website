@@ -1,0 +1,21 @@
+{
+  "name": "ZIPPTECH-Dictionary",
+  "short_name": "Dictionary",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#f5f6fa",
+  "theme_color": "#6c5ce7",
+  "description": "A powerful dictionary app with bookmarks and history",
+  "icons": [
+    {
+      "src": "icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
